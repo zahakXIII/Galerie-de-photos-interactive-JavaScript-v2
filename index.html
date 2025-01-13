@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie Photo Interactive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            text-align: center;
+        }
+
+        #image {
+            width: 500px;
+            height: 300px;
+            background-color: #f0f0f0;
+            margin: 20px auto;
+            text-align: center;
+            line-height: 300px;
+            font-size: 20px;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        .image-name {
+            font-size: 18px;
+            font-weight: normal;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .gallery {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+
+        .thumbnail:focus {
+            outline: 3px solid #f90;
+        }
+    </style>
+</head>
+<body>
+    <div id="image">Hover over an image below to display here</div>
+    <div class="image-name" id="imageName"> </div> <!-- Text name will be displayed here -->
+
+    <div class="gallery">
+        <img src="images/photo1.jpg" alt="Photo 1" class="thumbnail" tabindex="0">
+        <img src="images/photo2.jpg" alt="Photo 2" class="thumbnail" tabindex="0">
+        <img src="images/photo3.jpg" alt="Photo 3" class="thumbnail" tabindex="0">
+        <img src="images/photo4.jpg" alt="Photo 4" class="thumbnail" tabindex="0">
+        <img src="images/photo5.jpg" alt="Photo 5" class="thumbnail" tabindex="0">
+        <img src="images/photo6.jpg" alt="Photo 6" class="thumbnail" tabindex="0">
+    </div>
+
+    <script>
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const imageDiv = document.getElementById('image');
+        const imageNameDiv = document.getElementById('imageName');
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('mouseover', function() {
+                updateImage(thumbnail.src, thumbnail.alt);
+            });
+
+            thumbnail.addEventListener('mouseout', resetImage);
+
+            // Ajout des événements onfocus et onblur
+            thumbnail.addEventListener('focus', function() {
+                updateImage(thumbnail.src, thumbnail.alt);
+            });
+
+            thumbnail.addEventListener('blur', resetImage);
+        });
+
+        // Fonction d'update de l'image
+        function updateImage(imageSrc, imageAlt) {
+            imageDiv.style.backgroundImage = `url(${imageSrc})`;
+            imageNameDiv.innerHTML = imageAlt; // Afficher le texte alt de l'image en dessous
+            imageDiv.innerHTML = ''; // Vider le texte dans le container de l'image
+            console.log(`Image chargée : ${imageAlt}`);
+        }
+
+        // Fonction de réinitialisation
+        function resetImage() {
+            imageDiv.style.backgroundImage = '';
+            imageNameDiv.innerHTML = 'Hover over an image below to display here'; // Réinitialisation du texte
+            imageDiv.innerHTML = 'Hover over an image below to display here'; // Réinitialisation du texte de placeholder
+        }
+
+        // Ajout de l'écouteur d'événement onload pour exécuter une fonction
+        window.addEventListener('load', function() {
+            console.log('Le site est chargé et prêt !');
+            addTabFocusAttribute();
+        });
+
+        // Fonction ajoutant l'attribut tabindex à chaque image
+        function addTabFocusAttribute() {
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.setAttribute('tabindex', index + 1);
+            });
+        }
+    </script>
+</body>
+</html>
